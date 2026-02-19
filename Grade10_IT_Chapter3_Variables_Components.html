@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grade 10 IT – Chapter 3: Variables & Components</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Nunito:wght@400;600;700;800;900&display=swap');
+
+:root {
+  --bg: #f7f3ff;
+  --surface: #ffffff;
+  --card: #ffffff;
+  --str: #7c3aed;   /* purple - string */
+  --int: #0ea5e9;   /* blue - integer */
+  --real: #10b981;  /* green - real */
+  --bool: #f59e0b;  /* amber - boolean */
+  --char: #ef4444;  /* red - char */
+  --dark: #1e1b4b;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #4f46e5;
+  --accent2: #06b6d4;
+  --green: #10b981;
+  --orange: #f97316;
+  --red: #ef4444;
+  --shadow: 0 4px 24px rgba(79,70,229,0.10);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Nunito', sans-serif;
+  background: var(--bg);
+  color: var(--dark);
+  min-height: 100vh;
+}
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #0c4a6e 100%);
+  padding: 60px 40px 56px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.3);
+  color: #a5f3fc;
+  font-size: .75rem; font-weight: 800;
+  letter-spacing: .12em; text-transform: uppercase;
+  padding: 6px 18px; border-radius: 100px; margin-bottom: 20px;
+}
+.hero h1 {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 900; color: #fff;
+  line-height: 1.1; position: relative;
+}
+.hero h1 .pop { color: #fbbf24; }
+.hero .sub {
+  margin-top: 14px; color: rgba(255,255,255,.75);
+  font-size: 1.05rem; max-width: 560px; margin-inline: auto;
+  position: relative;
+}
+.outcome-chips {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  margin-top: 28px; position: relative;
+}
+.ochip {
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  color: #fff; font-size: .72rem; font-weight: 700;
+  padding: 5px 14px; border-radius: 100px;
+}
+
+/* ── TABS ── */
+.tab-nav {
+  display: flex; flex-wrap: wrap; gap: 0;
+  background: #fff;
+  border-bottom: 3px solid #e5e7eb;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  padding: 0 20px;
+}
+.tab-btn {
+  font-family: 'Nunito', sans-serif;
+  font-size: .82rem; font-weight: 800;
+  padding: 14px 18px;
+  border: none; border-bottom: 3px solid transparent;
+  margin-bottom: -3px;
+  cursor: pointer; transition: all .2s;
+  background: transparent; color: var(--muted);
+  white-space: nowrap;
+}
+.tab-btn:hover { color: var(--accent); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+/* ── SECTIONS ── */
+.section { display: none; padding: 40px; max-width: 1080px; margin: 0 auto; }
+.section.active { display: block; }
+
+/* ── SECTION HEADER ── */
+.sec-hdr { margin-bottom: 32px; }
+.sec-hdr h2 { font-size: 1.9rem; font-weight: 900; }
+.sec-hdr p { color: var(--muted); margin-top: 6px; font-size: .95rem; }
+.sec-hdr .line { width: 56px; height: 5px; border-radius: 100px; background: var(--accent); margin: 12px 0; }
+
+/* ── CARDS ── */
+.card {
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: 20px;
+  padding: 28px 30px;
+  margin-bottom: 24px;
+  box-shadow: var(--shadow);
+}
+.card-title {
+  font-size: 1.05rem; font-weight: 800;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* ── CODE ── */
+.code {
+  background: #1e1b4b;
+  border-radius: 14px;
+  padding: 20px 24px;
+  font-family: 'Space Mono', monospace;
+  font-size: .84rem; line-height: 1.9;
+  color: #e0e7ff;
+  margin: 14px 0;
+  position: relative;
+  overflow-x: auto;
+}
+.code .lbl {
+  position: absolute; top: 10px; right: 14px;
+  font-size: .62rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+.kw { color: #a78bfa; font-weight: 700; }
+.cm { color: #64748b; font-style: italic; }
+.st { color: #34d399; }
+.fn { color: #fbbf24; }
+.nu { color: #f87171; }
+.ty { color: #67e8f9; }
+.op { color: #f472b6; }
+
+/* ── GRIDS ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.g3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+.g5 { display: grid; grid-template-columns: repeat(5,1fr); gap: 14px; }
+@media(max-width:768px) { .g2,.g3,.g5 { grid-template-columns: 1fr; } }
+
+/* ── CALLOUTS ── */
+.callout {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 16px 18px; border-radius: 14px; margin: 14px 0;
+  font-size: .9rem; line-height: 1.7;
+}
+.c-info { background: #eff6ff; border-left: 4px solid #3b82f6; }
+.c-warn { background: #fffbeb; border-left: 4px solid #f59e0b; }
+.c-tip  { background: #f0fdf4; border-left: 4px solid #22c55e; }
+.c-hot  { background: #fef2f2; border-left: 4px solid #ef4444; }
+.ci { font-size: 1.3rem; flex-shrink: 0; }
+.cb strong { display: block; font-weight: 800; margin-bottom: 3px; }
+
+/* ── TABLES ── */
+table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+th { background: #f3f4f6; font-weight: 800; padding: 12px 16px; text-align: left; border-bottom: 2px solid var(--border); }
+td { padding: 11px 16px; border-bottom: 1px solid #f3f4f6; }
+tr:hover td { background: #fafafa; }
+
+/* ── DATA TYPE BADGES ── */
+.badge { display: inline-block; padding: 3px 12px; border-radius: 100px; font-size: .75rem; font-weight: 800; }
+.b-str { background: #ede9fe; color: var(--str); }
+.b-int { background: #e0f2fe; color: var(--int); }
+.b-real{ background: #d1fae5; color: var(--real); }
+.b-bool{ background: #fef3c7; color: var(--bool); }
+.b-char{ background: #fee2e2; color: var(--char); }
+
+/* ── BOX MEMORY VISUAL ── */
+.mem-box {
+  border: 3px solid var(--accent);
+  border-radius: 14px;
+  overflow: hidden;
+  font-family: 'Space Mono', monospace;
+}
+.mem-addr { background: var(--accent); color: #fff; padding: 6px 12px; font-size: .7rem; font-weight: 700; }
+.mem-val {
+  background: #f5f3ff; padding: 16px 12px;
+  text-align: center; font-size: 1.1rem; font-weight: 700;
+  min-height: 56px; display: flex; align-items: center; justify-content: center;
+}
+.mem-name { background: #e0e7ff; padding: 6px 12px; font-size: .7rem; color: var(--accent); text-align: center; font-weight: 700; }
+
+/* ── NAMING RULE PILLS ── */
+.rule { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+.rule:last-child { border-bottom: none; }
+.rule-num {
+  width: 34px; height: 34px; border-radius: 10px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 900; font-size: .9rem; background: var(--accent); color: #fff;
+}
+.rule-body strong { display: block; font-weight: 800; font-size: .9rem; }
+.rule-body p { font-size: .85rem; color: var(--muted); margin-top: 2px; }
+
+/* ── DATA TYPE CARDS ── */
+.dtype-card {
+  border-radius: 18px; padding: 22px 20px;
+  border: 2px solid transparent; transition: transform .2s;
+}
+.dtype-card:hover { transform: translateY(-3px); }
+.dt-icon { font-size: 2rem; margin-bottom: 10px; }
+.dt-name { font-size: 1rem; font-weight: 900; margin-bottom: 4px; }
+.dt-prefix { font-family: 'Space Mono', monospace; font-size: .75rem; font-weight: 700; margin-bottom: 8px; }
+.dt-desc { font-size: .82rem; line-height: 1.6; }
+.dt-examples { margin-top: 10px; }
+.dt-ex { font-family: 'Space Mono', monospace; font-size: .75rem; background: rgba(255,255,255,.6); padding: 3px 8px; border-radius: 6px; display: inline-block; margin: 2px 2px 2px 0; }
+
+.dt-str { background: #f5f3ff; border-color: #ddd6fe; }
+.dt-int { background: #e0f2fe; border-color: #bae6fd; }
+.dt-real{ background: #d1fae5; border-color: #a7f3d0; }
+.dt-bool{ background: #fef3c7; border-color: #fde68a; }
+.dt-char{ background: #fee2e2; border-color: #fecaca; }
+
+/* ── COMPONENT PREFIXES ── */
+.comp-row { display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 12px; margin-bottom: 8px; background: #f9fafb; border: 1px solid var(--border); }
+.comp-icon { font-size: 1.4rem; flex-shrink: 0; }
+.comp-pfx { font-family: 'Space Mono', monospace; font-size: .85rem; font-weight: 700; color: var(--accent); width: 50px; flex-shrink: 0; }
+.comp-name { font-weight: 800; font-size: .9rem; flex: 1; }
+.comp-eg { font-family: 'Space Mono', monospace; font-size: .75rem; color: var(--muted); }
+
+/* ── INTERACTIVE MEMORY ANIMATOR ── */
+.mem-stage { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px; background: #f9fafb; border-radius: 16px; }
+.mem-cell {
+  width: 130px; text-align: center;
+  transition: all .4s;
+}
+.mem-cell .label { font-size: .75rem; font-weight: 800; color: var(--muted); margin-bottom: 6px; }
+.mem-cell .box {
+  border: 2px solid var(--border); border-radius: 12px;
+  padding: 14px 8px; font-family: 'Space Mono', monospace;
+  font-size: .9rem; font-weight: 700; background: #fff;
+  min-height: 56px; display: flex; align-items: center; justify-content: center;
+  transition: all .4s;
+}
+.mem-cell .varname { font-size: .7rem; font-family: 'Space Mono', monospace; color: var(--accent); margin-top: 6px; font-weight: 700; }
+.mem-cell.assigned .box { background: #eff6ff; border-color: var(--accent); color: var(--accent); }
+.mem-ctrl { text-align: center; margin-top: 16px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+
+/* ── BUTTONS ── */
+.btn {
+  font-family: 'Nunito', sans-serif;
+  font-weight: 800; font-size: .85rem;
+  padding: 10px 22px; border-radius: 10px;
+  border: none; cursor: pointer; transition: all .2s;
+}
+.btn-p { background: var(--accent); color: #fff; }
+.btn-p:hover { background: #4338ca; }
+.btn-g { background: var(--green); color: #fff; }
+.btn-g:hover { background: #059669; }
+.btn-o { background: var(--orange); color: #fff; }
+.btn-o:hover { background: #ea580c; }
+.btn-r { background: var(--red); color: #fff; }
+.btn-r:hover { background: #dc2626; }
+.btn-gray { background: #e5e7eb; color: var(--dark); }
+
+/* ── CASTING FLOW ── */
+.cast-flow {
+  display: flex; align-items: center; gap: 0; flex-wrap: wrap;
+  background: #f9fafb; border: 1.5px solid var(--border);
+  border-radius: 16px; padding: 20px; gap: 0;
+}
+.cast-node {
+  background: #fff; border: 2px solid var(--border);
+  border-radius: 12px; padding: 14px 18px; text-align: center; flex-shrink: 0;
+}
+.cast-node .t { font-size: .68rem; color: var(--muted); font-weight: 700; margin-bottom: 4px; }
+.cast-node .v { font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; }
+.cast-arr {
+  flex: 1; min-width: 70px; display: flex; flex-direction: column; align-items: center;
+  padding: 0 8px;
+}
+.cast-fn { font-family: 'Space Mono', monospace; font-size: .72rem; font-weight: 700; color: var(--orange); background: #fff7ed; border: 1px solid #fed7aa; padding: 4px 10px; border-radius: 100px; margin-bottom: 4px; }
+.cast-line { color: var(--muted); font-size: 1.4rem; line-height: 1; }
+
+/* ── ERROR CARDS ── */
+.err-card { border-radius: 16px; padding: 22px; border: 2px solid; }
+.e-syn { background: #fef2f2; border-color: #fecaca; }
+.e-run { background: #fffbeb; border-color: #fde68a; }
+.e-log { background: #f0fdf4; border-color: #bbf7d0; }
+.err-title { font-size: 1rem; font-weight: 900; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+
+/* ── BUG FINDER GAME ── */
+.buggy-code {
+  background: #1e1b4b;
+  border-radius: 14px;
+  padding: 20px;
+  font-family: 'Space Mono', monospace;
+  font-size: .82rem; line-height: 2;
+  color: #e0e7ff;
+  counter-reset: linenum;
+}
+.codeline { display: flex; gap: 12px; padding: 1px 0; }
+.codeline:hover { background: rgba(255,255,255,.05); border-radius: 6px; }
+.linenum { color: #4c1d95; min-width: 24px; text-align: right; user-select: none; font-size: .75rem; padding-top: 2px; }
+.code-text { flex: 1; }
+.bug-line .code-text { text-decoration: underline wavy #ef4444; text-decoration-thickness: 2px; cursor: pointer; }
+.bug-hint { display: none; background: #fee2e2; color: #dc2626; padding: 6px 12px; border-radius: 8px; font-size: .78rem; margin-top: 4px; font-family: 'Nunito', sans-serif; }
+
+/* ── QUIZ ── */
+.quiz-q {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 18px; padding: 24px; margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.quiz-q .qtext { font-weight: 800; font-size: .95rem; margin-bottom: 16px; line-height: 1.5; }
+.quiz-opts { display: flex; flex-direction: column; gap: 10px; }
+.qopt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 12px; cursor: pointer;
+  font-size: .88rem; font-weight: 600;
+  background: #fafafa; transition: all .18s;
+}
+.qopt:hover { border-color: var(--accent); background: #f5f3ff; }
+.qopt.correct { border-color: var(--green); background: #f0fdf4; color: #166534; }
+.qopt.wrong { border-color: var(--red); background: #fef2f2; color: #991b1b; }
+.qopt.disabled { pointer-events: none; }
+.qletter { width: 30px; height: 30px; border-radius: 8px; background: #e5e7eb; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: .82rem; flex-shrink: 0; }
+.qfeedback { display: none; margin-top: 12px; padding: 12px 16px; border-radius: 12px; font-size: .88rem; line-height: 1.6; font-weight: 600; }
+.score-wrap { background: #fff; border: 1.5px solid var(--border); border-radius: 18px; padding: 22px 28px; display: flex; align-items: center; gap: 20px; margin-bottom: 28px; box-shadow: var(--shadow); }
+.score-num { font-size: 3rem; font-weight: 900; color: var(--accent); line-height: 1; }
+.prog-track { flex: 1; background: #e5e7eb; height: 8px; border-radius: 100px; }
+.prog-fill { background: linear-gradient(90deg, var(--accent), var(--accent2)); height: 100%; border-radius: 100px; transition: width .4s; }
+
+/* ── DRAG SORT ── */
+.sort-wrap { display: flex; flex-wrap: wrap; gap: 10px; min-height: 52px; padding: 10px; border: 2px dashed var(--border); border-radius: 12px; background: #fafafa; }
+.sort-item {
+  background: #fff; border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 10px 16px;
+  font-family: 'Space Mono', monospace; font-size: .82rem;
+  cursor: grab; user-select: none;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.sort-item:active { cursor: grabbing; opacity: .7; }
+
+/* ── CONVERSION TESTER ── */
+.conv-input { background: #fff; border: 1.5px solid var(--border); border-radius: 10px; padding: 10px 16px; font-family: 'Space Mono', monospace; font-size: .9rem; width: 100%; }
+.conv-input:focus { outline: none; border-color: var(--accent); }
+.conv-result { font-family: 'Space Mono', monospace; font-size: .9rem; padding: 10px 16px; border-radius: 10px; min-height: 44px; margin-top: 10px; font-weight: 700; }
+
+/* ── HIGHLIGHT ── */
+.hl { font-weight: 800; }
+.hl-p { color: var(--str); }
+.hl-b { color: var(--int); }
+.hl-g { color: var(--real); }
+.hl-o { color: var(--orange); }
+
+/* ── STEP LIST ── */
+.step { display: flex; gap: 16px; align-items: flex-start; padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
+.step:last-child { border-bottom: none; }
+.stepn { width: 36px; height: 36px; border-radius: 10px; background: var(--accent); color: #fff; font-weight: 900; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: .9rem; }
+.stepb h4 { font-size: .92rem; font-weight: 800; margin-bottom: 3px; }
+.stepb p { font-size: .85rem; color: var(--muted); line-height: 1.6; }
+
+/* ── TRACE TABLE ── */
+.trace-table { border: 1.5px solid var(--border); border-radius: 12px; overflow: hidden; }
+.trace-table th { background: #f5f3ff; color: var(--accent); }
+.trace-table .highlight-row td { background: #eff6ff; font-weight: 700; }
+
+footer {
+  text-align: center; padding: 30px;
+  color: var(--muted); font-size: .82rem;
+  border-top: 1px solid var(--border);
+  margin-top: 40px; background: #fff;
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-badge">📘 Grade 10 · IT · Chapter 3 · Term 1</div>
+  <h1>Variables &amp; <span class="pop">Components</span></h1>
+  <p class="sub">Everything you need to know to store, name, declare and convert data in Delphi — aligned to CAPS 2024 &amp; ATP 2026</p>
+  <div class="outcome-chips">
+    <span class="ochip">📦 Data Types</span>
+    <span class="ochip">🏷️ Naming Conventions</span>
+    <span class="ochip">📝 Declaring Variables</span>
+    <span class="ochip">✏️ Assigning Values</span>
+    <span class="ochip">🔄 Type Casting</span>
+    <span class="ochip">🐛 Errors</span>
+    <span class="ochip">🧩 Component Prefixes</span>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="showTab('intro')">🎒 Intro</button>
+  <button class="tab-btn" onclick="showTab('datatypes')">📦 Data Types</button>
+  <button class="tab-btn" onclick="showTab('naming')">🏷️ Naming</button>
+  <button class="tab-btn" onclick="showTab('declaring')">📝 Declaring</button>
+  <button class="tab-btn" onclick="showTab('assigning')">✏️ Assigning</button>
+  <button class="tab-btn" onclick="showTab('casting')">🔄 Casting</button>
+  <button class="tab-btn" onclick="showTab('errors')">🐛 Errors</button>
+  <button class="tab-btn" onclick="showTab('playground')">🚀 Try It!</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🧠 Quiz</button>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 1: INTRO -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-intro" class="section active">
+  <div class="sec-hdr">
+    <h2>🎒 What is a Variable?</h2>
+    <div class="line"></div>
+    <p>The invisible box that stores your data — let's explore how it works!</p>
+  </div>
+
+  <!-- Invisible Box Analogy -->
+  <div class="card">
+    <div class="card-title">📦 The Invisible Box Analogy</div>
+    <div class="g2" style="align-items:center">
+      <div>
+        <p style="line-height:1.8; font-size:.95rem">Imagine you have an <strong class="hl-p">invisible box</strong> that can store information. You can place anything you need to remember inside the box. When you need it, you simply find it by the box's label.</p>
+        <br>
+        <p style="line-height:1.8; font-size:.95rem">In programming, this invisible box is called a <strong class="hl-p">variable</strong> — a memory location that can hold <strong>one piece of data</strong> at any given time.</p>
+        <div class="callout c-info" style="margin-top:14px">
+          <div class="ci">💡</div>
+          <div class="cb"><strong>CAPS Definition</strong>A <b>variable</b> refers to a memory location that can store data of a particular data type. Each variable has a unique name and can be used to store data.</div>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:16px">
+        <!-- Animated box visual -->
+        <div style="position:relative; width:180px; height:180px">
+          <div style="border: 4px dashed var(--accent); border-radius: 20px; width:100%; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; background: #f5f3ff;">
+            <div style="font-size:2.5rem" id="boxEmoji">📭</div>
+            <div style="font-family:'Space Mono',monospace; font-size:.85rem; font-weight:700; color:var(--accent)" id="boxVal">Empty</div>
+            <div style="font-size:.7rem; color:var(--muted)">Memory Location</div>
+          </div>
+          <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--accent); color:#fff; padding:3px 14px; border-radius:100px; font-size:.7rem; font-weight:800">iAge</div>
+        </div>
+        <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center">
+          <button class="btn btn-p" style="font-size:.75rem; padding:8px 14px" onclick="putInBox(16,'👤','16')">Put 16 in box</button>
+          <button class="btn btn-o" style="font-size:.75rem; padding:8px 14px" onclick="putInBox(17,'👤','17')">Change to 17</button>
+          <button class="btn btn-gray" style="font-size:.75rem; padding:8px 14px" onclick="putInBox('','📭','Empty')">Empty box</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5 Key Properties -->
+  <div class="card">
+    <div class="card-title">⭐ 5 Key Properties of Variables</div>
+    <div class="g2">
+      <div>
+        <div class="rule">
+          <div class="rule-num">1</div>
+          <div class="rule-body"><strong>Stores one piece of data at a time</strong><p>Like a box, only one thing fits at a time.</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">2</div>
+          <div class="rule-body"><strong>Always stays in the same memory location</strong><p>You always know exactly where to find it.</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">3</div>
+          <div class="rule-body"><strong>The value can change</strong><p>You can replace the old data with new data at any time.</p></div>
+        </div>
+      </div>
+      <div>
+        <div class="rule">
+          <div class="rule-num">4</div>
+          <div class="rule-body"><strong>You can create as many as you need</strong><p>A program can have hundreds of variables, each with a unique name.</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">5</div>
+          <div class="rule-body"><strong>Values only exist while the program runs</strong><p>When the program closes, all variable values disappear from memory.</p></div>
+        </div>
+        <div class="callout c-warn" style="margin-top:8px">
+          <div class="ci">⚠️</div>
+          <div class="cb"><strong>Watch out!</strong>Assigning the value of variable A to variable B never affects variable A — only a <b>copy</b> of A's value is assigned to B.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chapter Overview Map -->
+  <div class="card">
+    <div class="card-title">🗺️ Chapter 3 Overview — What You'll Learn</div>
+    <div class="g3">
+      <div style="background:#f5f3ff; border-radius:14px; padding:18px; border:2px solid #ddd6fe">
+        <div style="font-size:1.5rem; margin-bottom:8px">📦</div>
+        <strong style="color:var(--str)">Unit 3.1</strong>
+        <div style="font-weight:800; margin:4px 0">Data Types</div>
+        <div style="font-size:.82rem; color:var(--muted)">String, Char, Integer, Real, Boolean — what they store and when to use them</div>
+      </div>
+      <div style="background:#e0f2fe; border-radius:14px; padding:18px; border:2px solid #bae6fd">
+        <div style="font-size:1.5rem; margin-bottom:8px">🏷️</div>
+        <strong style="color:var(--int)">Unit 3.2</strong>
+        <div style="font-weight:800; margin:4px 0">Variable Names</div>
+        <div style="font-size:.82rem; color:var(--muted)">Naming rules, conventions, prefixes, CamelCase</div>
+      </div>
+      <div style="background:#d1fae5; border-radius:14px; padding:18px; border:2px solid #a7f3d0">
+        <div style="font-size:1.5rem; margin-bottom:8px">📝</div>
+        <strong style="color:var(--real)">Unit 3.3</strong>
+        <div style="font-weight:800; margin:4px 0">Declaring Variables</div>
+        <div style="font-size:.82rem; color:var(--muted)">Using the <code style="font-family:'Space Mono',monospace">var</code> keyword, syntax, multiple declarations</div>
+      </div>
+      <div style="background:#fef3c7; border-radius:14px; padding:18px; border:2px solid #fde68a">
+        <div style="font-size:1.5rem; margin-bottom:8px">✏️</div>
+        <strong style="color:var(--bool)">Unit 3.4</strong>
+        <div style="font-weight:800; margin:4px 0">Assigning Values</div>
+        <div style="font-size:.82rem; color:var(--muted)">The <code style="font-family:'Space Mono',monospace">:=</code> operator, reading from components</div>
+      </div>
+      <div style="background:#fee2e2; border-radius:14px; padding:18px; border:2px solid #fecaca">
+        <div style="font-size:1.5rem; margin-bottom:8px">🔄</div>
+        <strong style="color:var(--char)">Unit 3.5</strong>
+        <div style="font-weight:800; margin:4px 0">Type Casting</div>
+        <div style="font-size:.82rem; color:var(--muted)">StrToInt, IntToStr, StrToFloat, FloatToStr</div>
+      </div>
+      <div style="background:#f0fdf4; border-radius:14px; padding:18px; border:2px solid #bbf7d0">
+        <div style="font-size:1.5rem; margin-bottom:8px">🐛</div>
+        <strong style="color:#166534">Unit 3.6</strong>
+        <div style="font-weight:800; margin:4px 0">Errors</div>
+        <div style="font-size:.82rem; color:var(--muted)">Syntax, Runtime and Logic errors — how to find and fix them</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 2: DATA TYPES -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-datatypes" class="section">
+  <div class="sec-hdr">
+    <h2>📦 Data Types</h2>
+    <div class="line"></div>
+    <p>Every variable must store a specific <strong>type</strong> of data. You must tell Delphi what type BEFORE using the variable.</p>
+  </div>
+
+  <!-- 5 Data Type Cards -->
+  <div class="g5" style="margin-bottom:24px">
+    <div class="dtype-card dt-str">
+      <div class="dt-icon">🔤</div>
+      <div class="dt-name" style="color:var(--str)">String</div>
+      <div class="dt-prefix" style="color:var(--str)">Prefix: <code>s</code></div>
+      <div class="dt-desc">A sequence of letters, numbers and symbols. Can be one character to many characters long.</div>
+      <div class="dt-examples">
+        <span class="dt-ex">'Stefan'</span>
+        <span class="dt-ex">'123'</span>
+        <span class="dt-ex">'Hello!'</span>
+        <span class="dt-ex">'P@ss'</span>
+      </div>
+    </div>
+    <div class="dtype-card dt-int">
+      <div class="dt-icon">🔢</div>
+      <div class="dt-name" style="color:var(--int)">Integer</div>
+      <div class="dt-prefix" style="color:var(--int)">Prefix: <code>i</code></div>
+      <div class="dt-desc">Whole numbers only — no decimal point. Used for counting and indexing.</div>
+      <div class="dt-examples">
+        <span class="dt-ex">0</span>
+        <span class="dt-ex">42</span>
+        <span class="dt-ex">-15</span>
+        <span class="dt-ex">2026</span>
+      </div>
+    </div>
+    <div class="dtype-card dt-real">
+      <div class="dt-icon">📐</div>
+      <div class="dt-name" style="color:var(--real)">Real</div>
+      <div class="dt-prefix" style="color:var(--real)">Prefix: <code>r</code></div>
+      <div class="dt-desc">Decimal (floating point) numbers. Used for measurements, prices, percentages.</div>
+      <div class="dt-examples">
+        <span class="dt-ex">3.14</span>
+        <span class="dt-ex">-0.5</span>
+        <span class="dt-ex">99.9</span>
+        <span class="dt-ex">1.66</span>
+      </div>
+    </div>
+    <div class="dtype-card dt-bool">
+      <div class="dt-icon">✅</div>
+      <div class="dt-name" style="color:var(--bool)">Boolean</div>
+      <div class="dt-prefix" style="color:var(--bool)">Prefix: <code>b</code></div>
+      <div class="dt-desc">Only two possible values: <strong>True</strong> or <strong>False</strong>. Used for yes/no decisions.</div>
+      <div class="dt-examples">
+        <span class="dt-ex">True</span>
+        <span class="dt-ex">False</span>
+      </div>
+    </div>
+    <div class="dtype-card dt-char">
+      <div class="dt-icon">🔡</div>
+      <div class="dt-name" style="color:var(--char)">Char</div>
+      <div class="dt-prefix" style="color:var(--char)">Prefix: <code>c</code></div>
+      <div class="dt-desc">Exactly ONE single character — a letter, digit or symbol.</div>
+      <div class="dt-examples">
+        <span class="dt-ex">'A'</span>
+        <span class="dt-ex">'f'</span>
+        <span class="dt-ex">'5'</span>
+        <span class="dt-ex">'#'</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Memory Size Table -->
+  <div class="card">
+    <div class="card-title">💾 Memory Size of Each Data Type</div>
+    <table>
+      <thead><tr><th>Data Type</th><th>Keyword in Delphi</th><th>Prefix</th><th>Memory Used</th><th>Example Values</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-str">String</span></td><td><code>String</code></td><td><code>s</code></td><td>Available memory (variable)</td><td><code>'Lerato'</code>, <code>'082 555 1234'</code></td></tr>
+        <tr><td><span class="badge b-int">Integer</span></td><td><code>Integer</code></td><td><code>i</code></td><td><strong>4 bytes</strong></td><td><code>0, 100, -5, 2026</code></td></tr>
+        <tr><td><span class="badge b-real">Real</span></td><td><code>Real</code></td><td><code>r</code></td><td><strong>8 bytes</strong></td><td><code>3.14, 15.75, -0.001</code></td></tr>
+        <tr><td><span class="badge b-char">Char</span></td><td><code>Char</code></td><td><code>c</code></td><td><strong>2 bytes</strong></td><td><code>'A', 'f', '#'</code></td></tr>
+        <tr><td><span class="badge b-bool">Boolean</span></td><td><code>Boolean</code></td><td><code>b</code></td><td><strong>2 bytes</strong></td><td><code>True</code>, <code>False</code></td></tr>
+      </tbody>
+    </table>
+    <div class="callout c-hot" style="margin-top:14px">
+      <div class="ci">🚨</div>
+      <div class="cb"><strong>Critical Rule!</strong><code>'123'</code> (String) is NOT the same as <code>123</code> (Integer). A number in quotes is a string and CANNOT be used in calculations! You need <b>type casting</b> to convert between types.</div>
+    </div>
+  </div>
+
+  <!-- Choosing the right type -->
+  <div class="card">
+    <div class="card-title">🤔 Choosing the Right Data Type — Interactive</div>
+    <p style="margin-bottom:16px; font-size:.9rem">For each piece of information below, click the correct data type!</p>
+    <div id="dtype-game" style="display:flex; flex-direction:column; gap:12px"></div>
+    <div id="dtype-score" style="margin-top:16px; font-weight:800; font-size:1rem"></div>
+  </div>
+
+  <!-- Important notes -->
+  <div class="g2">
+    <div class="callout c-info">
+      <div class="ci">📱</div>
+      <div class="cb"><strong>Why is a phone number a String?</strong>A phone number like <code>'0821234567'</code> is stored as a String — you never do maths on phone numbers! Also, leading zeros would be lost if stored as Integer.</div>
+    </div>
+    <div class="callout c-tip">
+      <div class="ci">🔢</div>
+      <div class="cb"><strong>Integer vs Real — when to choose?</strong>Use Integer for <b>counting</b> (learners, items, age in whole years). Use Real for <b>measuring</b> (price, mass, percentage, temperature).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 3: NAMING -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-naming" class="section">
+  <div class="sec-hdr">
+    <h2>🏷️ Naming Conventions</h2>
+    <div class="line"></div>
+    <p>Good names make your code easy to understand — there are strict rules AND best practice guidelines.</p>
+  </div>
+
+  <div class="g2">
+    <!-- Rules -->
+    <div class="card">
+      <div class="card-title">🚫 Naming RULES (Compulsory — will cause errors if broken)</div>
+      <div class="rule">
+        <div class="rule-num" style="background:#ef4444">1</div>
+        <div class="rule-body"><strong>Names must be unique</strong><p>No two variables or components can have the same name.</p></div>
+      </div>
+      <div class="rule">
+        <div class="rule-num" style="background:#ef4444">2</div>
+        <div class="rule-body"><strong>No spaces allowed</strong><p>Use CamelCase instead: <code style="font-family:'Space Mono',monospace">rAmountPaid</code> not <code>r Amount Paid</code></p></div>
+      </div>
+      <div class="rule">
+        <div class="rule-num" style="background:#ef4444">3</div>
+        <div class="rule-body"><strong>Cannot start with a number</strong><p><code style="font-family:'Space Mono',monospace">2count</code> ❌ but <code style="font-family:'Space Mono',monospace">count2</code> ✅</p></div>
+      </div>
+      <div class="rule">
+        <div class="rule-num" style="background:#ef4444">4</div>
+        <div class="rule-body"><strong>No special characters</strong><p>Except underscore ( _ ). No !, @, #, $, %, etc.</p></div>
+      </div>
+    </div>
+
+    <!-- Conventions -->
+    <div class="card">
+      <div class="card-title">✅ Naming CONVENTIONS (Best Practice)</div>
+      <div class="rule">
+        <div class="rule-num">1</div>
+        <div class="rule-body"><strong>Start with a type prefix letter</strong><p><code style="font-family:'Space Mono',monospace">s</code> for String, <code>i</code> for Integer, <code>r</code> for Real, <code>b</code> for Boolean, <code>c</code> for Char</p></div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">2</div>
+        <div class="rule-body"><strong>Use CamelCase</strong><p>First prefix lowercase, each new word starts with uppercase: <code style="font-family:'Space Mono',monospace">rAmountPaid</code></p></div>
+      </div>
+      <div class="rule">
+        <div class="rule-num">3</div>
+        <div class="rule-body"><strong>Be descriptive</strong><p><code style="font-family:'Space Mono',monospace">iAge</code> not just <code>i</code> — names should tell you what data they hold</p></div>
+      </div>
+      <div class="callout c-info" style="margin-top:8px">
+        <div class="ci">🖥️</div>
+        <div class="cb"><strong>Fun Fact!</strong>Windows OS has 50 million lines of code. Imagine trying to understand it if all variables were named <code>x</code>, <code>y</code>, or <code>String1</code>!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Variable prefix table -->
+  <div class="card">
+    <div class="card-title">📋 Variable Prefix Reference Table</div>
+    <table>
+      <thead><tr><th>Data Type</th><th>Prefix</th><th>Good Examples</th><th>Bad Examples</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge b-str">String</span></td><td><code style="font-size:1rem; font-weight:800; color:var(--str)">s</code></td><td><code>sName</code>, <code>sSurname</code>, <code>sEmailAddress</code></td><td><code>name</code>, <code>String1</code>, <code>x</code></td></tr>
+        <tr><td><span class="badge b-char">Char</span></td><td><code style="font-size:1rem; font-weight:800; color:var(--char)">c</code></td><td><code>cGender</code>, <code>cGrade</code>, <code>cCode</code></td><td><code>gender</code>, <code>G</code></td></tr>
+        <tr><td><span class="badge b-int">Integer</span></td><td><code style="font-size:1rem; font-weight:800; color:var(--int)">i</code></td><td><code>iAge</code>, <code>iMark1</code>, <code>iOrderQuantity</code></td><td><code>age</code>, <code>mark</code>, <code>num</code></td></tr>
+        <tr><td><span class="badge b-real">Real</span></td><td><code style="font-size:1rem; font-weight:800; color:var(--real)">r</code></td><td><code>rPrice</code>, <code>rHeight</code>, <code>rAmountPaid</code></td><td><code>price</code>, <code>amount</code></td></tr>
+        <tr><td><span class="badge b-bool">Boolean</span></td><td><code style="font-size:1rem; font-weight:800; color:var(--bool)">b</code></td><td><code>bPensioner</code>, <code>bValid</code>, <code>bCheckedIn</code></td><td><code>pensioner</code>, <code>flag</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Component Prefixes -->
+  <div class="card">
+    <div class="card-title">🧩 Component Naming — Three-Letter Prefixes</div>
+    <p style="margin-bottom:16px; font-size:.9rem">Components use a <strong>three-letter prefix</strong> describing the component type, followed by a descriptive name in CamelCase.</p>
+    <div class="g2">
+      <div>
+        <div class="comp-row"><div class="comp-icon">🪟</div><div class="comp-pfx">frm</div><div class="comp-name">TForm</div><div class="comp-eg">frmMain, frmLogin</div></div>
+        <div class="comp-row"><div class="comp-icon">🔘</div><div class="comp-pfx">btn</div><div class="comp-name">TButton</div><div class="comp-eg">btnCalc, btnOK, btnClose</div></div>
+        <div class="comp-row"><div class="comp-icon">🏷️</div><div class="comp-pfx">lbl</div><div class="comp-name">TLabel</div><div class="comp-eg">lblResult, lblHeading</div></div>
+        <div class="comp-row"><div class="comp-icon">📝</div><div class="comp-pfx">edt</div><div class="comp-name">TEdit</div><div class="comp-eg">edtName, edtAge, edtMark</div></div>
+        <div class="comp-row"><div class="comp-icon">📄</div><div class="comp-pfx">mmo</div><div class="comp-name">TMemo</div><div class="comp-eg">mmoOutput, mmoReport</div></div>
+      </div>
+      <div>
+        <div class="comp-row"><div class="comp-icon">📋</div><div class="comp-pfx">lbx</div><div class="comp-name">TListBox</div><div class="comp-eg">lbxNames, lbxItems</div></div>
+        <div class="comp-row"><div class="comp-icon">🔽</div><div class="comp-pfx">cbo</div><div class="comp-name">TComboBox</div><div class="comp-eg">cboGender, cboMonth</div></div>
+        <div class="comp-row"><div class="comp-icon">🖼️</div><div class="comp-pfx">img</div><div class="comp-name">TImage</div><div class="comp-eg">imgLogo, imgCat</div></div>
+        <div class="comp-row"><div class="comp-icon">▭</div><div class="comp-pfx">pnl</div><div class="comp-name">TPanel</div><div class="comp-eg">pnlInput, pnlOutput</div></div>
+        <div class="comp-row"><div class="comp-icon">⏱️</div><div class="comp-pfx">tmr</div><div class="comp-name">TTimer</div><div class="comp-eg">tmrClock, tmrGame</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Name Checker Game -->
+  <div class="card">
+    <div class="card-title">🎮 Valid or Invalid? Name Checker Game</div>
+    <p style="margin-bottom:16px; font-size:.9rem; color:var(--muted)">Click ✅ Valid or ❌ Invalid for each variable name. Explain why!</p>
+    <div id="name-game" style="display:flex; flex-direction:column; gap:10px"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 4: DECLARING -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-declaring" class="section">
+  <div class="sec-hdr">
+    <h2>📝 Declaring Variables &amp; Components</h2>
+    <div class="line"></div>
+    <p>Before you can use a variable, you must <strong>declare</strong> it — tell Delphi to reserve memory for it.</p>
+  </div>
+
+  <!-- Declaration syntax -->
+  <div class="card">
+    <div class="card-title">📐 Declaration Syntax</div>
+    <p style="margin-bottom:14px; font-size:.9rem">Variables are declared in the <code style="font-family:'Space Mono',monospace; color:var(--str)">var</code> section, using a colon to separate the name from the type, ending with a semicolon:</p>
+    <div class="code">
+      <span class="lbl">Syntax</span>
+      <span class="kw">var</span> <span class="cm">// Start of variable declarations</span><br>
+      &nbsp;&nbsp;VariableName : <span class="ty">DataType</span>; <span class="cm">// Declare one variable</span><br>
+      &nbsp;&nbsp;Name1, Name2 : <span class="ty">DataType</span>; <span class="cm">// Declare multiple of the same type</span>
+    </div>
+
+    <div class="g2" style="margin-top:16px">
+      <div>
+        <p style="font-weight:800; margin-bottom:8px; color:var(--accent)">Rules to remember:</p>
+        <div class="rule">
+          <div class="rule-num" style="width:24px;height:24px;font-size:.75rem">•</div>
+          <div class="rule-body"><p>The <code>var</code> keyword starts the section</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="width:24px;height:24px;font-size:.75rem">•</div>
+          <div class="rule-body"><p>Colon <code>:</code> separates name from type</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="width:24px;height:24px;font-size:.75rem">•</div>
+          <div class="rule-body"><p>Semicolon <code>;</code> ends each declaration</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="width:24px;height:24px;font-size:.75rem">•</div>
+          <div class="rule-body"><p>Indent declarations for readability</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="width:24px;height:24px;font-size:.75rem">•</div>
+          <div class="rule-body"><p>Multiple same-type vars on one line, separated by commas</p></div>
+        </div>
+      </div>
+      <div class="code" style="margin:0">
+        <span class="lbl">Example</span>
+        <span class="kw">var</span><br>
+        &nbsp;&nbsp;rTotal : <span class="ty">Real</span>;<br>
+        &nbsp;&nbsp;iMinimum, iMaximum : <span class="ty">Integer</span>;<br>
+        &nbsp;&nbsp;sName : <span class="ty">String</span>;<br>
+        &nbsp;&nbsp;cGender : <span class="ty">Char</span>;<br>
+        &nbsp;&nbsp;bValid : <span class="ty">Boolean</span>;
+      </div>
+    </div>
+  </div>
+
+  <!-- Memory diagram -->
+  <div class="card">
+    <div class="card-title">🧠 How Memory is Allocated</div>
+    <p style="margin-bottom:16px; font-size:.9rem">When the program runs, Delphi reserves a memory location for each declared variable. The number of bytes depends on the data type.</p>
+    <div class="mem-stage">
+      <div class="mem-cell">
+        <div class="label">sName : String</div>
+        <div class="box" style="border-color:var(--str); color:var(--str)">? (empty)</div>
+        <div class="varname">Address: 0x1A20</div>
+      </div>
+      <div class="mem-cell">
+        <div class="label">iAge : Integer</div>
+        <div class="box" style="border-color:var(--int); color:var(--int)">? (empty)</div>
+        <div class="varname">Address: 0x1A24<br><span style="color:var(--muted)">4 bytes</span></div>
+      </div>
+      <div class="mem-cell">
+        <div class="label">rPrice : Real</div>
+        <div class="box" style="border-color:var(--real); color:var(--real)">? (empty)</div>
+        <div class="varname">Address: 0x1A28<br><span style="color:var(--muted)">8 bytes</span></div>
+      </div>
+      <div class="mem-cell">
+        <div class="label">cGrade : Char</div>
+        <div class="box" style="border-color:var(--char); color:var(--char)">? (empty)</div>
+        <div class="varname">Address: 0x1A30<br><span style="color:var(--muted)">2 bytes</span></div>
+      </div>
+      <div class="mem-cell">
+        <div class="label">bPassed : Boolean</div>
+        <div class="box" style="border-color:var(--bool); color:var(--bool)">? (empty)</div>
+        <div class="varname">Address: 0x1A32<br><span style="color:var(--muted)">2 bytes</span></div>
+      </div>
+    </div>
+    <div class="callout c-tip" style="margin-top:14px">
+      <div class="ci">💡</div>
+      <div class="cb"><strong>Declaration = Reservation</strong>Declaring a variable is like booking a seat — you're reserving a specific memory address. The variable name is your label for that seat. You can only store the correct <b>type</b> of data in it.</div>
+    </div>
+  </div>
+
+  <!-- Component declaration -->
+  <div class="card">
+    <div class="card-title">🧩 How Delphi Declares Components Automatically</div>
+    <p style="margin-bottom:14px; font-size:.9rem">When you drag a component onto a form, Delphi <strong>automatically</strong> adds it to the <code style="font-family:'Space Mono',monospace">type</code> section. You don't declare components manually!</p>
+    <div class="code">
+      <span class="lbl">Auto-generated by Delphi</span>
+      <span class="kw">type</span><br>
+      &nbsp;&nbsp;TfrmReport = <span class="kw">class</span>(TForm)<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;edtName: <span class="ty">TEdit</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;edtMark1: <span class="ty">TEdit</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;lblName: <span class="ty">TLabel</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;lblOutput: <span class="ty">TLabel</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;btnGenerate: <span class="ty">TButton</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;pnlInput: <span class="ty">TPanel</span>;<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">procedure</span> <span class="fn">btnGenerateClick</span>(Sender: TObject);<br>
+      &nbsp;&nbsp;<span class="kw">end</span>;
+    </div>
+    <div class="callout c-warn" style="margin-top:14px">
+      <div class="ci">⚠️</div>
+      <div class="cb"><strong>Your variables go in the procedure!</strong>The <code>var</code> section for <b>your own variables</b> goes inside the procedure (event handler), not in the <code>type</code> section. See the next tab for examples.</div>
+    </div>
+  </div>
+
+  <!-- Build a declaration -->
+  <div class="card">
+    <div class="card-title">🔨 Build a Variable Declaration — Practice</div>
+    <p style="margin-bottom:14px; font-size:.9rem">Given the information to store, choose the correct data type and write the declaration:</p>
+    <div id="decl-practice" style="display:flex; flex-direction:column; gap:14px"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 5: ASSIGNING -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-assigning" class="section">
+  <div class="sec-hdr">
+    <h2>✏️ Assigning Values to Variables</h2>
+    <div class="line"></div>
+    <p>Putting data INTO a variable using the assignment operator <code style="font-family:'Space Mono',monospace; font-size:1rem">:=</code></p>
+  </div>
+
+  <!-- Assignment operator -->
+  <div class="card">
+    <div class="card-title">⚡ The Assignment Operator — <code>:=</code></div>
+    <div class="g2">
+      <div>
+        <p style="line-height:1.8; font-size:.95rem">The <span class="hl hl-p">:= (colon-equals)</span> operator stores a value in a variable. Think of it as an arrow pointing LEFT — "put this value into this variable."</p>
+        <br>
+        <div style="background:#f5f3ff; border-radius:12px; padding:16px; font-family:'Space Mono',monospace; font-size:.9rem; text-align:center">
+          <span style="color:var(--accent); font-weight:700">variableName</span>
+          <span style="color:var(--orange); font-size:1.2rem; font-weight:700; margin:0 12px">:=</span>
+          <span style="color:var(--green); font-weight:700">value or expression</span>
+        </div>
+        <div class="callout c-hot" style="margin-top:14px">
+          <div class="ci">🚫</div>
+          <div class="cb"><strong>Common Mistake!</strong>Using <code>=</code> instead of <code>:=</code> will cause a <b>syntax error</b>! In Pascal/Delphi, <code>=</code> is only used for comparison.</div>
+        </div>
+      </div>
+      <div class="code">
+        <span class="lbl">Examples</span>
+        <span class="kw">var</span><br>
+        &nbsp;&nbsp;iAge : <span class="ty">Integer</span>;<br>
+        &nbsp;&nbsp;sName : <span class="ty">String</span>;<br>
+        &nbsp;&nbsp;rHeight : <span class="ty">Real</span>;<br>
+        &nbsp;&nbsp;bPassed : <span class="ty">Boolean</span>;<br>
+        &nbsp;&nbsp;cGrade : <span class="ty">Char</span>;<br>
+        <span class="kw">begin</span><br>
+        &nbsp;&nbsp;iAge <span class="op">:=</span> <span class="nu">16</span>;<br>
+        &nbsp;&nbsp;sName <span class="op">:=</span> <span class="st">'Thabo'</span>;<br>
+        &nbsp;&nbsp;rHeight <span class="op">:=</span> <span class="nu">1.75</span>;<br>
+        &nbsp;&nbsp;bPassed <span class="op">:=</span> <span class="kw">True</span>;<br>
+        &nbsp;&nbsp;cGrade <span class="op">:=</span> <span class="st">'A'</span>;<br>
+        <span class="kw">end</span>;
+      </div>
+    </div>
+  </div>
+
+  <!-- Animated memory simulation -->
+  <div class="card">
+    <div class="card-title">🎬 Watch Memory Change — Animation</div>
+    <p style="margin-bottom:14px; font-size:.9rem; color:var(--muted)">Click each assignment button and watch the memory boxes change in real time:</p>
+    <div class="mem-stage" id="animMem">
+      <div class="mem-cell" id="mc-sname">
+        <div class="label">sName : String</div>
+        <div class="box">?</div>
+        <div class="varname">sName</div>
+      </div>
+      <div class="mem-cell" id="mc-iage">
+        <div class="label">iAge : Integer</div>
+        <div class="box">?</div>
+        <div class="varname">iAge</div>
+      </div>
+      <div class="mem-cell" id="mc-rh">
+        <div class="label">rHeight : Real</div>
+        <div class="box">?</div>
+        <div class="varname">rHeight</div>
+      </div>
+      <div class="mem-cell" id="mc-bp">
+        <div class="label">bPassed : Boolean</div>
+        <div class="box">?</div>
+        <div class="varname">bPassed</div>
+      </div>
+    </div>
+    <div class="mem-ctrl">
+      <button class="btn btn-p" onclick="animAssign('mc-sname','Thabo','var(--str)')">sName := 'Thabo'</button>
+      <button class="btn btn-p" style="background:var(--int)" onclick="animAssign('mc-iage','16','var(--int)')">iAge := 16</button>
+      <button class="btn btn-p" style="background:var(--real)" onclick="animAssign('mc-rh','1.75','var(--real)')">rHeight := 1.75</button>
+      <button class="btn btn-p" style="background:var(--bool)" onclick="animAssign('mc-bp','True','var(--bool)')">bPassed := True</button>
+      <button class="btn btn-p" style="background:var(--int)" onclick="animAssign('mc-iage','17','var(--int)')">iAge := 17 (update!)</button>
+      <button class="btn btn-gray" onclick="resetAnim()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <!-- Reading from components -->
+  <div class="card">
+    <div class="card-title">📥 Reading Input FROM Components</div>
+    <p style="margin-bottom:14px; font-size:.9rem">When a user types in a <code>TEdit</code> component, you read it using the <code>.Text</code> property. <strong>It always comes as a String!</strong></p>
+    <div class="code">
+      <span class="lbl">Reading from TEdit</span>
+      <span class="cm">// Reading text — stays as String</span><br>
+      sName <span class="op">:=</span> edtName.<span class="fn">Text</span>;<br>
+      <br>
+      <span class="cm">// Reading a number — MUST cast (convert) first!</span><br>
+      iMark <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark.<span class="fn">Text</span>);<br>
+      rPrice <span class="op">:=</span> <span class="fn">StrToFloat</span>(edtPrice.<span class="fn">Text</span>);
+    </div>
+    <div class="code" style="margin-top:8px">
+      <span class="lbl">Writing output TO components</span>
+      <span class="cm">// Output to TLabel — must convert number to String</span><br>
+      lblResult.<span class="fn">Caption</span> <span class="op">:=</span> <span class="st">'Hello, '</span> + sName;<br>
+      lblAge.<span class="fn">Caption</span> <span class="op">:=</span> <span class="fn">IntToStr</span>(iAge);<br>
+      lblPrice.<span class="fn">Caption</span> <span class="op">:=</span> <span class="fn">FloatToStr</span>(rPrice);
+    </div>
+
+    <!-- SpinEdit note -->
+    <div class="callout c-tip" style="margin-top:14px">
+      <div class="ci">🔢</div>
+      <div class="cb"><strong>TSpinEdit — Value property</strong>The <code>TSpinEdit</code> uses <code>.Value</code> (not <code>.Text</code>), which gives you an <b>Integer</b> directly — no casting needed!<br><code style="font-family:'Space Mono',monospace">iQty := sedQuantity.Value;</code></div>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="card">
+    <div class="card-title">📋 Worked Example: Report Card</div>
+    <p style="margin-bottom:14px; font-size:.9rem">A user enters a name, subject and two marks. Calculate the average and display a report.</p>
+    <div class="code">
+      <span class="lbl">Full Procedure Code</span>
+      <span class="kw">procedure</span> TfrmReport.<span class="fn">btnGenerateClick</span>(Sender: TObject);<br>
+      <span class="kw">var</span><br>
+      &nbsp;&nbsp;sName, sSubject : <span class="ty">String</span>;<br>
+      &nbsp;&nbsp;iMark1, iMark2 : <span class="ty">Integer</span>;<br>
+      &nbsp;&nbsp;rAverage : <span class="ty">Real</span>;<br>
+      <span class="kw">begin</span><br>
+      &nbsp;&nbsp;<span class="cm">// Step 1: Get input from TEdit components</span><br>
+      &nbsp;&nbsp;sName <span class="op">:=</span> edtName.<span class="fn">Text</span>;<br>
+      &nbsp;&nbsp;sSubject <span class="op">:=</span> edtSubject.<span class="fn">Text</span>;<br>
+      &nbsp;&nbsp;iMark1 <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark1.<span class="fn">Text</span>);<br>
+      &nbsp;&nbsp;iMark2 <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark2.<span class="fn">Text</span>);<br>
+      &nbsp;&nbsp;<span class="cm">// Step 2: Calculate</span><br>
+      &nbsp;&nbsp;rAverage <span class="op">:=</span> (iMark1 + iMark2) / <span class="nu">2</span>;<br>
+      &nbsp;&nbsp;<span class="cm">// Step 3: Output</span><br>
+      &nbsp;&nbsp;lblOutput.<span class="fn">Caption</span> <span class="op">:=</span> sName + <span class="st">' – '</span> + sSubject;<br>
+      &nbsp;&nbsp;lblAverage.<span class="fn">Caption</span> <span class="op">:=</span> <span class="st">'Average: '</span> + <span class="fn">FloatToStr</span>(rAverage);<br>
+      <span class="kw">end</span>;
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 6: CASTING -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-casting" class="section">
+  <div class="sec-hdr">
+    <h2>🔄 Converting Data Types (Casting)</h2>
+    <div class="line"></div>
+    <p>Because TEdit always gives you a String, you need to <strong>cast</strong> (convert) between types to do calculations.</p>
+  </div>
+
+  <!-- Why casting -->
+  <div class="card">
+    <div class="card-title">🤔 Why Do We Need to Convert Types?</div>
+    <p style="line-height:1.8; font-size:.95rem">Every TEdit component stores its data as a <strong class="hl-p">String</strong>. You cannot do maths on a String. The solution is to <strong>convert</strong> the String to an Integer or Real first, do your calculation, then convert the result back to String to display it.</p>
+    <div class="cast-flow" style="margin-top:16px">
+      <div class="cast-node" style="border-color:var(--char)">
+        <div class="t" style="color:var(--char)">TEdit.Text (String)</div>
+        <div class="v" style="color:var(--char)">'75'</div>
+      </div>
+      <div class="cast-arr">
+        <div class="cast-fn">StrToInt()</div>
+        <div class="cast-line">→</div>
+      </div>
+      <div class="cast-node" style="border-color:var(--int)">
+        <div class="t" style="color:var(--int)">Integer Variable</div>
+        <div class="v" style="color:var(--int)">75</div>
+      </div>
+      <div class="cast-arr">
+        <div class="cast-fn">maths: +, -, *, /</div>
+        <div class="cast-line">→</div>
+      </div>
+      <div class="cast-node" style="border-color:var(--int)">
+        <div class="t" style="color:var(--int)">Result (Integer)</div>
+        <div class="v" style="color:var(--int)">150</div>
+      </div>
+      <div class="cast-arr">
+        <div class="cast-fn">IntToStr()</div>
+        <div class="cast-line">→</div>
+      </div>
+      <div class="cast-node" style="border-color:var(--real)">
+        <div class="t" style="color:var(--real)">TLabel.Caption (String)</div>
+        <div class="v" style="color:var(--real)">'150'</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Conversion functions table -->
+  <div class="card">
+    <div class="card-title">📋 Casting Functions — CAPS Required (Grade 10)</div>
+    <table>
+      <thead><tr><th>Function</th><th>Converts FROM → TO</th><th>Example Code</th><th>Result Type &amp; Value</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code style="color:var(--orange); font-size:.9rem; font-family:'Space Mono',monospace">StrToInt(s)</code></td>
+          <td>String → Integer</td>
+          <td><code>iAge := StrToInt('16');</code></td>
+          <td><span class="badge b-int">Integer</span> <code>16</code></td>
+        </tr>
+        <tr>
+          <td><code style="color:var(--orange); font-size:.9rem; font-family:'Space Mono',monospace">StrToFloat(s)</code></td>
+          <td>String → Real</td>
+          <td><code>rPrice := StrToFloat('15.75');</code></td>
+          <td><span class="badge b-real">Real</span> <code>15.75</code></td>
+        </tr>
+        <tr>
+          <td><code style="color:var(--orange); font-size:.9rem; font-family:'Space Mono',monospace">IntToStr(i)</code></td>
+          <td>Integer → String</td>
+          <td><code>sNum := IntToStr(42);</code></td>
+          <td><span class="badge b-str">String</span> <code>'42'</code></td>
+        </tr>
+        <tr>
+          <td><code style="color:var(--orange); font-size:.9rem; font-family:'Space Mono',monospace">FloatToStr(f)</code></td>
+          <td>Real → String</td>
+          <td><code>sAmt := FloatToStr(15.75);</code></td>
+          <td><span class="badge b-str">String</span> <code>'15.75'</code></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="callout c-info" style="margin-top:14px">
+      <div class="ci">📌</div>
+      <div class="cb"><strong>Combined in one line</strong>You can skip the intermediate string variable:<br><code style="font-family:'Space Mono',monospace">iMark := StrToInt(edtMark.Text);</code><br>This reads the text AND converts it in one go.</div>
+    </div>
+  </div>
+
+  <!-- Live Casting Tester -->
+  <div class="card">
+    <div class="card-title">🧪 Live Casting Tester — Try It!</div>
+    <p style="margin-bottom:16px; font-size:.9rem; color:var(--muted)">Enter a value and choose a function to see the result:</p>
+    <div class="g2">
+      <div>
+        <div style="margin-bottom:10px">
+          <label style="font-weight:800; font-size:.85rem; display:block; margin-bottom:6px">Input value:</label>
+          <input class="conv-input" id="castInput" type="text" placeholder="e.g. 42 or 3.14 or 'hello'" value="75">
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:8px">
+          <button class="btn btn-p" onclick="tryCast('StrToInt')">StrToInt</button>
+          <button class="btn btn-p" style="background:var(--real)" onclick="tryCast('StrToFloat')">StrToFloat</button>
+          <button class="btn btn-p" style="background:var(--str)" onclick="tryCast('IntToStr')">IntToStr</button>
+          <button class="btn btn-p" style="background:var(--char)" onclick="tryCast('FloatToStr')">FloatToStr</button>
+        </div>
+      </div>
+      <div>
+        <div style="font-weight:800; font-size:.85rem; margin-bottom:6px">Result:</div>
+        <div class="conv-result" id="castResult" style="background:#f9fafb; border:1.5px solid var(--border); color:var(--muted)">Click a function button to see the result...</div>
+        <div id="castCode" style="font-family:'Space Mono',monospace; font-size:.78rem; color:var(--muted); margin-top:8px"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Worked Example -->
+  <div class="card">
+    <div class="card-title">📊 Worked Example: Mark Casting &amp; Report</div>
+    <div class="code">
+      <span class="lbl">Delphi Code</span>
+      <span class="kw">var</span><br>
+      &nbsp;&nbsp;sMark : <span class="ty">String</span>;<br>
+      &nbsp;&nbsp;iMark : <span class="ty">Integer</span>;<br>
+      <span class="kw">begin</span><br>
+      &nbsp;&nbsp;<span class="cm">// 1. Read from Edit (always a String)</span><br>
+      &nbsp;&nbsp;sMark <span class="op">:=</span> edtMark.<span class="fn">Text</span>;<br>
+      &nbsp;&nbsp;<span class="cm">// 2. Convert String → Integer for maths</span><br>
+      &nbsp;&nbsp;iMark <span class="op">:=</span> <span class="fn">StrToInt</span>(sMark);<br>
+      &nbsp;&nbsp;<span class="cm">// OR combine into one line:</span><br>
+      &nbsp;&nbsp;iMark <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark.<span class="fn">Text</span>);<br>
+      &nbsp;&nbsp;<span class="cm">// 3. Use in calculation</span><br>
+      &nbsp;&nbsp;iMark <span class="op">:=</span> iMark + <span class="nu">5</span>; <span class="cm">// bonus marks</span><br>
+      &nbsp;&nbsp;<span class="cm">// 4. Convert Integer → String to display</span><br>
+      &nbsp;&nbsp;lblMessage.<span class="fn">Caption</span> <span class="op">:=</span> <span class="fn">IntToStr</span>(iMark);<br>
+      <span class="kw">end</span>;
+    </div>
+
+    <div style="margin-top:16px">
+      <div style="font-weight:800; margin-bottom:10px">📊 Trace Table — Step by step</div>
+      <div class="trace-table">
+        <table>
+          <thead><tr><th>Step</th><th>Code</th><th>sMark</th><th>iMark</th><th>lblMessage.Caption</th></tr></thead>
+          <tbody>
+            <tr><td>Start</td><td>—</td><td>?</td><td>?</td><td>?</td></tr>
+            <tr class="highlight-row"><td>1</td><td><code>sMark := edtMark.Text</code></td><td style="color:var(--str)">'75'</td><td>?</td><td>?</td></tr>
+            <tr class="highlight-row"><td>2</td><td><code>iMark := StrToInt(sMark)</code></td><td style="color:var(--str)">'75'</td><td style="color:var(--int)">75</td><td>?</td></tr>
+            <tr class="highlight-row"><td>3</td><td><code>iMark := iMark + 5</code></td><td style="color:var(--str)">'75'</td><td style="color:var(--int)">80</td><td>?</td></tr>
+            <tr class="highlight-row"><td>4</td><td><code>lblMessage.Caption := IntToStr(iMark)</code></td><td style="color:var(--str)">'75'</td><td style="color:var(--int)">80</td><td style="color:var(--real)">'80'</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 7: ERRORS -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-errors" class="section">
+  <div class="sec-hdr">
+    <h2>🐛 Types of Programming Errors</h2>
+    <div class="line"></div>
+    <p>Three types of errors — learn to identify, explain and fix each one!</p>
+  </div>
+
+  <div class="g3">
+    <div class="err-card e-syn">
+      <div class="err-title" style="color:#991b1b">🔴 Syntax Error<span style="font-size:.75rem; font-weight:600; margin-left:8px">(Compile-time)</span></div>
+      <p style="font-size:.88rem; line-height:1.7; margin-bottom:10px">Code that <strong>breaks the grammar rules</strong> of the programming language. Delphi catches these <em>before</em> the program runs and shows them in the Messages panel.</p>
+      <div class="code" style="font-size:.75rem">
+        <span class="cm">// Missing semicolon:</span><br>
+        iAge := 16 <span style="color:#ef4444">← ERROR!</span><br><br>
+        <span class="cm">// Wrong assignment operator:</span><br>
+        sName <span style="color:#ef4444">=</span> 'Thabo'; <span style="color:#ef4444">← ERROR!</span><br><br>
+        <span class="cm">// Undeclared variable:</span><br>
+        iScore := 0; <span style="color:#ef4444">← ERROR if not declared!</span>
+      </div>
+    </div>
+    <div class="err-card e-run">
+      <div class="err-title" style="color:#92400e">🟡 Runtime Error<span style="font-size:.75rem; font-weight:600; margin-left:8px">(While running)</span></div>
+      <p style="font-size:.88rem; line-height:1.7; margin-bottom:10px">Code that compiles fine but <strong>crashes while running</strong> because it tries to do something impossible under certain conditions.</p>
+      <div class="code" style="font-size:.75rem">
+        <span class="cm">// User types 'abc' in a mark field:</span><br>
+        iMark := <span class="fn">StrToInt</span>(edtMark.Text);<br>
+        <span style="color:#f59e0b">← CRASH! 'abc' ≠ number</span><br><br>
+        <span class="cm">// Division by zero:</span><br>
+        rResult := rTotal / rDivisor;<br>
+        <span style="color:#f59e0b">← CRASH if rDivisor = 0!</span>
+      </div>
+    </div>
+    <div class="err-card e-log">
+      <div class="err-title" style="color:#14532d">🟢 Logic Error<span style="font-size:.75rem; font-weight:600; margin-left:8px">(Hardest to find!)</span></div>
+      <p style="font-size:.88rem; line-height:1.7; margin-bottom:10px">Code that compiles AND runs, but produces <strong>wrong results</strong> because the algorithm is incorrect.</p>
+      <div class="code" style="font-size:.75rem">
+        <span class="cm">// Wrong average calculation:</span><br>
+        rAverage := iMark1 + iMark2 / <span class="nu">2</span>;<br>
+        <span style="color:#22c55e">← Should be: (iMark1+iMark2)/2</span><br><br>
+        <span class="cm">// Wrong swap (value lost):</span><br>
+        sName := sSurname; <span class="cm">// ← sName's original</span><br>
+        sSurname := sName; <span style="color:#22c55e">← value is gone!</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Comparison Table -->
+  <div class="card" style="margin-top:24px">
+    <div class="card-title">📊 Error Comparison Table</div>
+    <table>
+      <thead><tr><th>Error Type</th><th>When detected</th><th>Does it compile?</th><th>Does it run?</th><th>Correct results?</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#dc2626; font-weight:800">🔴 Syntax</span></td><td>At compile time</td><td style="color:var(--red); font-weight:800">❌ No</td><td style="color:var(--red)">❌ No</td><td style="color:var(--red)">❌ No</td></tr>
+        <tr><td><span style="color:#d97706; font-weight:800">🟡 Runtime</span></td><td>While program runs</td><td style="color:var(--green); font-weight:800">✅ Yes</td><td style="color:var(--red)">❌ Crashes</td><td style="color:var(--red)">❌ No</td></tr>
+        <tr><td><span style="color:#16a34a; font-weight:800">🟢 Logic</span></td><td>When checking output</td><td style="color:var(--green); font-weight:800">✅ Yes</td><td style="color:var(--green)">✅ Yes</td><td style="color:var(--red)">❌ Wrong!</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Common Syntax Errors list -->
+  <div class="card">
+    <div class="card-title">🔴 Common Syntax Errors in Delphi</div>
+    <div class="g2">
+      <div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Missing semicolon (;)</strong><p>Every statement must end with a semicolon — except before <code>else</code></p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Using = instead of :=</strong><p>Assignment is <code>:=</code>, comparison is <code>=</code></p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Missing var keyword</strong><p>Must use <code>var</code> before declaring variables</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Missing begin...end</strong><p>Procedure body must be wrapped in <code>begin...end</code></p></div>
+        </div>
+      </div>
+      <div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Misspelling variable names</strong><p><code>iAeg</code> instead of <code>iAge</code> — case matters!</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Using a keyword as variable name</strong><p><code>var begin := 5</code> — <code>begin</code> is reserved!</p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>String not in single quotes</strong><p>Must be <code>'Thabo'</code> not <code>"Thabo"</code></p></div>
+        </div>
+        <div class="rule">
+          <div class="rule-num" style="background:#ef4444">!</div>
+          <div class="rule-body"><strong>Using undeclared variable</strong><p>Must declare in <code>var</code> section before using</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bug Finder Game -->
+  <div class="card">
+    <div class="card-title">🎮 Bug Finder — Click the Errors!</div>
+    <p style="margin-bottom:14px; font-size:.9rem; color:var(--muted)">The code below has 5 bugs. Click on any underlined red line to reveal the error!</p>
+    <div class="buggy-code" id="bugCode">
+      <div class="codeline"><span class="linenum">1</span><span class="code-text"><span class="kw">Var</span></span></div>
+      <div class="codeline bug-line" id="bug1" onclick="showBug(1)">
+        <span class="linenum">2</span><span class="code-text">&nbsp;&nbsp;sName, sBirthDate : <span class="ty">string</span>;</span>
+        <div class="bug-hint" id="bh1">✅ Line 2 is actually correct! Multiple variables of same type declared together.</div>
+      </div>
+      <div class="codeline"><span class="linenum">3</span><span class="code-text">&nbsp;&nbsp;iAge : <span class="ty">Integer</span>;</span></div>
+      <div class="codeline"><span class="linenum">4</span><span class="code-text">&nbsp;&nbsp;rHeight : <span class="ty">real</span>;</span></div>
+      <div class="codeline"><span class="linenum">5</span><span class="code-text"><span class="kw">Begin</span></span></div>
+      <div class="codeline bug-line" id="bug2" onclick="showBug(2)">
+        <span class="linenum">6</span><span class="code-text">&nbsp;&nbsp;sName <span style="color:#ef4444; font-weight:700">=</span> <span class="st">'Lerato'</span>;</span>
+        <div class="bug-hint" id="bh2">🔴 BUG! Uses <code>=</code> instead of <code>:=</code> (assignment operator). Should be: <code>sName := 'Lerato';</code></div>
+      </div>
+      <div class="codeline bug-line" id="bug3" onclick="showBug(3)">
+        <span class="linenum">7</span><span class="code-text">&nbsp;&nbsp;iAge := <span class="nu">15</span> <span style="color:#ef4444">← missing semicolon</span></span>
+        <div class="bug-hint" id="bh3">🔴 BUG! Missing semicolon at end of statement. Should be: <code>iAge := 15;</code></div>
+      </div>
+      <div class="codeline bug-line" id="bug4" onclick="showBug(4)">
+        <span class="linenum">8</span><span class="code-text">&nbsp;&nbsp;rHeight := <span class="nu">1.66</span> <span style="color:#ef4444">m</span>;</span>
+        <div class="bug-hint" id="bh4">🔴 BUG! Unit 'm' (metres) cannot be part of a Real value. Should be: <code>rHeight := 1.66;</code></div>
+      </div>
+      <div class="codeline bug-line" id="bug5" onclick="showBug(5)">
+        <span class="linenum">9</span><span class="code-text">&nbsp;&nbsp;iAge := rHeight;</span>
+        <div class="bug-hint" id="bh5">🔴 BUG! Incompatible types — you cannot assign a Real (1.66) to an Integer variable. Types must be compatible!</div>
+      </div>
+      <div class="codeline bug-line" id="bug6" onclick="showBug(6)">
+        <span class="linenum">10</span><span class="code-text">&nbsp;&nbsp;bSACitizen := <span style="color:#ef4444">Yes</span>;</span>
+        <div class="bug-hint" id="bh6">🔴 BUG! <code>Yes</code> is not a valid Boolean value. Must be <code>True</code> or <code>False</code>. Should be: <code>bSACitizen := True;</code></div>
+      </div>
+      <div class="codeline"><span class="linenum">11</span><span class="code-text"><span class="kw">End</span>.</span></div>
+    </div>
+    <div id="bugScore" style="margin-top:14px; font-weight:800; font-size:.95rem; color:var(--accent)"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 8: PLAYGROUND -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-playground" class="section">
+  <div class="sec-hdr">
+    <h2>🚀 Try It! — Interactive Playground</h2>
+    <div class="line"></div>
+    <p>Simulate a real Delphi application — enter data, click buttons and see the code and output!</p>
+  </div>
+
+  <!-- Simulated App -->
+  <div class="card">
+    <div class="card-title">🧑‍🎓 Student Report Card Simulator</div>
+    <p style="margin-bottom:16px; font-size:.9rem; color:var(--muted)">Fill in the fields below and click the buttons — just like a Delphi form!</p>
+
+    <div style="background:#c0c0c0; border:3px solid #808080; border-radius:4px; padding:0; overflow:hidden; max-width:580px; font-family:'Nunito',sans-serif">
+      <!-- Title bar -->
+      <div style="background:#000080; color:#fff; padding:4px 10px; display:flex; align-items:center; gap:8px; font-size:.8rem; font-weight:700">
+        <span>📋</span> frmReport — Student Report Card
+      </div>
+      <!-- Form body -->
+      <div style="padding:16px; display:flex; flex-direction:column; gap:10px">
+        <div style="display:flex; gap:8px; align-items:center">
+          <label style="font-size:.8rem; width:100px; font-weight:700">Name:</label>
+          <input id="pg-name" style="flex:1; border:2px inset #fff; padding:4px 8px; font-size:.82rem; background:#fff" type="text" placeholder="edtName.Text">
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <label style="font-size:.8rem; width:100px; font-weight:700">Subject:</label>
+          <input id="pg-subject" style="flex:1; border:2px inset #fff; padding:4px 8px; font-size:.82rem; background:#fff" type="text" placeholder="edtSubject.Text">
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <label style="font-size:.8rem; width:100px; font-weight:700">Mark 1:</label>
+          <input id="pg-m1" style="flex:1; border:2px inset #fff; padding:4px 8px; font-size:.82rem; background:#fff" type="number" placeholder="edtMark1.Text" min="0" max="100">
+        </div>
+        <div style="display:flex; gap:8px; align-items:center">
+          <label style="font-size:.8rem; width:100px; font-weight:700">Mark 2:</label>
+          <input id="pg-m2" style="flex:1; border:2px inset #fff; padding:4px 8px; font-size:.82rem; background:#fff" type="number" placeholder="edtMark2.Text" min="0" max="100">
+        </div>
+        <div style="display:flex; gap:8px; margin-top:6px">
+          <button onclick="runReport()" style="background:#d4d0c8; border:2px outset #fff; padding:4px 18px; font-size:.8rem; cursor:pointer; font-weight:700">Generate Report</button>
+          <button onclick="clearReport()" style="background:#d4d0c8; border:2px outset #fff; padding:4px 18px; font-size:.8rem; cursor:pointer">Clear</button>
+        </div>
+        <div style="background:#fff; border:2px inset #aaa; padding:10px; min-height:80px; font-size:.82rem; font-family:'Space Mono',monospace" id="pg-output">
+          <span style="color:#aaa">lblOutput.Caption will appear here...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Generated code display -->
+    <div style="margin-top:20px">
+      <div style="font-weight:800; margin-bottom:10px">📄 Delphi Code Generated:</div>
+      <div class="code" id="pg-code">
+        <span class="cm">// Click "Generate Report" to see the code...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick variable name checker -->
+  <div class="card">
+    <div class="card-title">🏷️ Variable Name Validator</div>
+    <p style="margin-bottom:14px; font-size:.9rem; color:var(--muted)">Type any variable name and check if it follows the Delphi rules:</p>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
+      <input class="conv-input" id="nameCheck" type="text" placeholder="e.g. iAge or 2count or My Name" style="flex:1; min-width:200px" oninput="checkName()">
+    </div>
+    <div id="nameResult" style="margin-top:12px; padding:14px 16px; border-radius:12px; display:none; font-size:.9rem; font-weight:700; line-height:1.6"></div>
+  </div>
+
+  <!-- Casting Practice -->
+  <div class="card">
+    <div class="card-title">🔄 Casting Practice — Fill in the Blank</div>
+    <p style="margin-bottom:14px; font-size:.9rem; color:var(--muted)">What function do you need? Type your answer and click Check:</p>
+    <div id="cast-blanks" style="display:flex; flex-direction:column; gap:14px"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════ -->
+<!-- TAB 9: QUIZ -->
+<!-- ═══════════════════════════════════════ -->
+<div id="tab-quiz" class="section">
+  <div class="sec-hdr">
+    <h2>🧠 Chapter 3 Quiz</h2>
+    <div class="line"></div>
+    <p>Test your knowledge! All questions based on the textbook and CAPS requirements.</p>
+  </div>
+
+  <div class="score-wrap">
+    <div class="score-num" id="qScore">0</div>
+    <div>
+      <div style="font-weight:800">Score</div>
+      <div style="color:var(--muted); font-size:.85rem" id="qLabel">Answer questions to earn points!</div>
+    </div>
+    <div style="flex:1; margin: 0 16px">
+      <div class="prog-track"><div class="prog-fill" id="qBar" style="width:0%"></div></div>
+    </div>
+    <button class="btn btn-gray" onclick="resetQuiz()">🔄 Restart</button>
+  </div>
+
+  <div id="quiz-wrap"></div>
+</div>
+
+<footer>
+  <p>📘 Grade 10 IT · Chapter 3: Variables &amp; Components · CAPS 2024 &amp; ATP 2026</p>
+  <p style="margin-top:6px">Learning outcomes: Data types · Naming conventions · Declaring · Assigning · Casting · Errors 🚀</p>
+</footer>
+
+<script>
+// ── TABS ──
+function showTab(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── BOX ANIMATION ──
+function putInBox(val, emoji, display) {
+  document.getElementById('boxEmoji').textContent = emoji || (val ? '📦' : '📭');
+  document.getElementById('boxVal').textContent = display;
+}
+
+// ── MEMORY ANIMATION ──
+function animAssign(cellId, val, color) {
+  const cell = document.getElementById(cellId);
+  const box = cell.querySelector('.box');
+  box.style.background = '#eff6ff';
+  box.style.borderColor = 'var(--accent)';
+  box.style.color = 'var(--accent)';
+  box.textContent = val;
+  setTimeout(() => {
+    box.style.color = color;
+    box.style.borderColor = color;
+  }, 300);
+}
+function resetAnim() {
+  ['mc-sname','mc-iage','mc-rh','mc-bp'].forEach(id => {
+    const cell = document.getElementById(id);
+    const box = cell.querySelector('.box');
+    box.style.background = '';
+    box.style.borderColor = '';
+    box.style.color = '';
+    box.textContent = '?';
+  });
+}
+
+// ── DATA TYPE GAME ──
+const dtItems = [
+  { q: 'Your full name: Thabo Molefe', a: 'String', reason: 'Text with letters — use String' },
+  { q: 'Number of learners in class: 32', a: 'Integer', reason: 'Whole number (no decimal) — use Integer' },
+  { q: 'Price of a pizza: R89.99', a: 'Real', reason: 'Has a decimal — use Real' },
+  { q: 'Is it raining? Yes/No', a: 'Boolean', reason: 'Only True or False — use Boolean' },
+  { q: "Your gender code: 'M'", a: 'Char', reason: 'Single character — use Char' },
+  { q: 'Phone number: 0821234567', a: 'String', reason: 'Phone numbers start with 0 and you never calculate with them — String!' },
+  { q: 'Your age: 16', a: 'Integer', reason: 'Whole number — use Integer' },
+  { q: 'Temperature: 23.5°C', a: 'Real', reason: 'Decimal value — use Real' },
+];
+let dtScore = 0, dtAnswered = 0;
+function buildDtGame() {
+  const el = document.getElementById('dtype-game');
+  if (!el) return;
+  el.innerHTML = '';
+  dtItems.forEach((item, i) => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px;';
+    row.innerHTML = `<div style="flex:1; min-width:200px; font-weight:700; font-size:.88rem">${item.q}</div>
+    <div style="display:flex; gap:6px; flex-wrap:wrap">
+      ${['String','Integer','Real','Boolean','Char'].map(t => `<button onclick="checkDt(this,'${t}','${item.a}','${item.reason}',${i})" style="font-size:.75rem; padding:5px 12px; border-radius:8px; border:1.5px solid #d1d5db; background:#fff; cursor:pointer; font-weight:700">${t}</button>`).join('')}
+    </div>
+    <div id="dtfb${i}" style="width:100%; font-size:.8rem; display:none; margin-top:6px; padding:8px 12px; border-radius:8px"></div>`;
+    el.appendChild(row);
+  });
+}
+function checkDt(btn, chosen, correct, reason, idx) {
+  const fb = document.getElementById('dtfb' + idx);
+  const allBtns = btn.parentElement.querySelectorAll('button');
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+  if (chosen === correct) {
+    btn.style.background = '#d1fae5'; btn.style.borderColor = '#10b981'; btn.style.color = '#065f46';
+    fb.style.background = '#f0fdf4'; fb.style.color = '#166534';
+    fb.innerHTML = '✅ Correct! ' + reason;
+    dtScore++;
+  } else {
+    btn.style.background = '#fee2e2'; btn.style.borderColor = '#ef4444'; btn.style.color = '#991b1b';
+    allBtns.forEach(b => { if (b.textContent === correct) { b.style.background = '#d1fae5'; b.style.borderColor = '#10b981'; }});
+    fb.style.background = '#fef2f2'; fb.style.color = '#991b1b';
+    fb.innerHTML = '❌ Incorrect. Correct answer: <strong>' + correct + '</strong>. ' + reason;
+  }
+  fb.style.display = 'block';
+  dtAnswered++;
+  document.getElementById('dtype-score').textContent = `Score: ${dtScore} / ${dtAnswered} answered`;
+}
+buildDtGame();
+
+// ── NAME CHECKER GAME ──
+const nameItems = [
+  { name: 'iAge', valid: true, reason: 'Correct prefix (i), descriptive, no spaces or special chars.' },
+  { name: '2count', valid: false, reason: 'Cannot start with a number.' },
+  { name: 'My Name', valid: false, reason: 'Cannot contain spaces.' },
+  { name: 'rAmountPaid', valid: true, reason: 'Correct Real prefix (r), CamelCase, descriptive.' },
+  { name: 'begin', valid: false, reason: '"begin" is a reserved keyword in Delphi.' },
+  { name: 'bIsValid', valid: true, reason: 'Correct Boolean prefix (b), descriptive name.' },
+  { name: 'total!', valid: false, reason: 'Cannot contain special characters (!).' },
+  { name: 'sEmailAddress', valid: true, reason: 'Correct String prefix (s), descriptive, CamelCase.' },
+];
+function buildNameGame() {
+  const el = document.getElementById('name-game');
+  if (!el) return;
+  nameItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'display:flex; align-items:center; gap:12px; flex-wrap:wrap; padding:12px 16px; background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px;';
+    div.innerHTML = `
+      <code style="font-family:'Space Mono',monospace; font-size:.9rem; font-weight:700; flex:1">${item.name}</code>
+      <button onclick="checkName_game(this,true,${item.valid},'${item.reason.replace(/'/g,"\\'")}',${i})" style="background:#d1fae5; border:1.5px solid #6ee7b7; color:#065f46; padding:6px 14px; border-radius:8px; cursor:pointer; font-weight:800; font-size:.8rem">✅ Valid</button>
+      <button onclick="checkName_game(this,false,${item.valid},'${item.reason.replace(/'/g,"\\'")}',${i})" style="background:#fee2e2; border:1.5px solid #fca5a5; color:#991b1b; padding:6px 14px; border-radius:8px; cursor:pointer; font-weight:800; font-size:.8rem">❌ Invalid</button>
+      <div id="ngfb${i}" style="width:100%; font-size:.82rem; display:none; margin-top:6px; padding:8px 12px; border-radius:8px"></div>`;
+    el.appendChild(div);
+  });
+}
+function checkName_game(btn, chosen, correct, reason, idx) {
+  const fb = document.getElementById('ngfb' + idx);
+  const allBtns = btn.parentElement.querySelectorAll('button');
+  allBtns.forEach(b => b.style.pointerEvents = 'none');
+  const isCorrect = chosen === correct;
+  fb.style.display = 'block';
+  if (isCorrect) {
+    fb.style.background = '#f0fdf4'; fb.style.color = '#166534';
+    fb.innerHTML = '✅ Correct! ' + reason;
+  } else {
+    fb.style.background = '#fef2f2'; fb.style.color = '#991b1b';
+    fb.innerHTML = '❌ ' + (correct ? 'This IS valid.' : 'This is INVALID.') + ' ' + reason;
+  }
+}
+buildNameGame();
+
+// ── DECLARATION PRACTICE ──
+const declItems = [
+  { q: 'A variable to store the temperature: 37.5', type: 'Real', prefix: 'r', eg: 'rTemperature' },
+  { q: "A variable to store someone's South African ID number", type: 'String', prefix: 's', eg: 'sIDNumber' },
+  { q: 'A variable to store whether a learner has paid fees (yes/no)', type: 'Boolean', prefix: 'b', eg: 'bFeesPaid' },
+  { q: 'A variable to store the number of items sold: 150', type: 'Integer', prefix: 'i', eg: 'iItemsSold' },
+  { q: "A variable to store a learner's grade code: 'A'", type: 'Char', prefix: 'c', eg: 'cGrade' },
+];
+function buildDeclPractice() {
+  const el = document.getElementById('decl-practice');
+  if (!el) return;
+  declItems.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;';
+    div.innerHTML = `
+      <div style="font-weight:700; font-size:.88rem; margin-bottom:10px">${i+1}. ${item.q}</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+        <span style="font-family:'Space Mono',monospace; font-size:.85rem">var<br>&nbsp;&nbsp;</span>
+        <input id="dp${i}" style="border:1.5px solid #d1d5db; border-radius:8px; padding:6px 12px; font-family:'Space Mono',monospace; font-size:.82rem; width:200px" placeholder="e.g. rTemperature : Real;">
+        <button onclick="checkDecl(${i},'${item.type}','${item.prefix}','${item.eg}')" class="btn btn-p" style="padding:7px 16px; font-size:.8rem">Check</button>
+      </div>
+      <div id="dpfb${i}" style="margin-top:8px; font-size:.82rem; display:none; padding:8px 12px; border-radius:8px"></div>`;
+    el.appendChild(div);
+  });
+}
+function checkDecl(i, type, prefix, eg) {
+  const val = document.getElementById('dp'+i).value.trim().toLowerCase();
+  const fb = document.getElementById('dpfb'+i);
+  fb.style.display = 'block';
+  const hasType = val.includes(type.toLowerCase());
+  const hasPrefix = val.startsWith(prefix.toLowerCase()) || val.split(':')[0].trim().startsWith(prefix.toLowerCase());
+  if (hasType && hasPrefix) {
+    fb.style.background = '#f0fdf4'; fb.style.color = '#166534';
+    fb.innerHTML = `✅ Correct! A good answer: <code style="font-family:'Space Mono',monospace">${eg} : ${type};</code>`;
+  } else if (hasType) {
+    fb.style.background = '#fffbeb'; fb.style.color = '#92400e';
+    fb.innerHTML = `⚠️ Correct type (${type}), but remember the prefix '<b>${prefix}</b>'. Try: <code style="font-family:'Space Mono',monospace">${eg} : ${type};</code>`;
+  } else {
+    fb.style.background = '#fef2f2'; fb.style.color = '#991b1b';
+    fb.innerHTML = `❌ Not quite. The correct data type is <b>${type}</b> with prefix '<b>${prefix}</b>'. Example: <code style="font-family:'Space Mono',monospace">${eg} : ${type};</code>`;
+  }
+}
+buildDeclPractice();
+
+// ── CASTING TESTER ──
+function tryCast(fn) {
+  const raw = document.getElementById('castInput').value.trim();
+  const res = document.getElementById('castResult');
+  const codeEl = document.getElementById('castCode');
+  let result, code, ok = true;
+  try {
+    if (fn === 'StrToInt') {
+      const n = parseInt(raw);
+      if (isNaN(n) || raw.includes('.')) { result = '❌ ERROR: "' + raw + '" cannot be converted to Integer!'; ok = false; }
+      else { result = '✅ Result: ' + n + '  (type: Integer)'; }
+      code = 'iVar := StrToInt(\'' + raw + '\');';
+    } else if (fn === 'StrToFloat') {
+      const n = parseFloat(raw);
+      if (isNaN(n)) { result = '❌ ERROR: "' + raw + '" cannot be converted to Real!'; ok = false; }
+      else { result = '✅ Result: ' + n + '  (type: Real)'; }
+      code = 'rVar := StrToFloat(\'' + raw + '\');';
+    } else if (fn === 'IntToStr') {
+      const n = parseInt(raw);
+      if (isNaN(n)) { result = '❌ ERROR: Input is not an Integer!'; ok = false; }
+      else { result = '✅ Result: \'' + n + '\'  (type: String)'; }
+      code = 'sVar := IntToStr(' + raw + ');';
+    } else if (fn === 'FloatToStr') {
+      const n = parseFloat(raw);
+      if (isNaN(n)) { result = '❌ ERROR: Input is not a Real number!'; ok = false; }
+      else { result = '✅ Result: \'' + n + '\'  (type: String)'; }
+      code = 'sVar := FloatToStr(' + raw + ');';
+    }
+  } catch(e) { result = '❌ Error occurred.'; ok = false; }
+  res.textContent = result;
+  res.style.background = ok ? '#f0fdf4' : '#fef2f2';
+  res.style.color = ok ? '#166534' : '#991b1b';
+  codeEl.textContent = '// Delphi code: ' + code;
+}
+
+// ── VARIABLE NAME VALIDATOR ──
+function checkName() {
+  const val = document.getElementById('nameCheck').value;
+  const res = document.getElementById('nameResult');
+  if (!val) { res.style.display = 'none'; return; }
+  const errors = [];
+  const keywords = ['begin','end','var','if','then','else','while','for','do','repeat','until','procedure','function','type','unit','uses','program','const','integer','real','string','boolean','char'];
+  if (/^\d/.test(val)) errors.push('❌ Cannot start with a number');
+  if (/\s/.test(val)) errors.push('❌ Cannot contain spaces');
+  if (/[^a-zA-Z0-9_]/.test(val)) errors.push('❌ Cannot contain special characters (only letters, numbers, underscore)');
+  if (keywords.includes(val.toLowerCase())) errors.push('❌ "' + val + '" is a reserved keyword — cannot be used as a variable name');
+  if (!/^[sirbcd]/i.test(val) && val.length > 1) errors.push('⚠️ Convention: name should start with a type prefix (s, i, r, b, c)');
+  if (val.length === 1) errors.push('⚠️ Convention: use a descriptive name, not just one letter');
+  res.style.display = 'block';
+  if (errors.length === 0) {
+    res.style.background = '#f0fdf4'; res.style.color = '#166534';
+    res.innerHTML = '✅ <strong>Valid name!</strong> This follows Delphi naming rules.';
+  } else {
+    res.style.background = '#fef2f2'; res.style.color = '#991b1b';
+    res.innerHTML = errors.join('<br>');
+  }
+}
+
+// ── BUG FINDER ──
+let bugsFound = 0;
+function showBug(n) {
+  const hint = document.getElementById('bh' + n);
+  if (hint.style.display === 'block') return;
+  hint.style.display = 'block';
+  const isRealBug = [2,3,4,5,6].includes(n);
+  if (isRealBug) bugsFound++;
+  document.getElementById('bugScore').textContent = bugsFound > 0 ? `🐛 ${bugsFound} bug${bugsFound > 1 ? 's' : ''} found!` : '';
+}
+
+// ── CASTING BLANKS ──
+const castBlanks = [
+  { q: 'iAge _____(edtAge.Text);', answer: ':= StrToInt', hint: 'Reading an Integer from TEdit — need := and StrToInt()' },
+  { q: 'lblResult.Caption _____(iTotal);', answer: ':= IntToStr', hint: 'Displaying an Integer on TLabel — need := and IntToStr()' },
+  { q: 'rPrice _____(edtPrice.Text);', answer: ':= StrToFloat', hint: 'Reading a Real from TEdit — need := and StrToFloat()' },
+  { q: 'lblAmount.Caption _____(rTotal);', answer: ':= FloatToStr', hint: 'Displaying a Real on TLabel — need := and FloatToStr()' },
+];
+function buildCastBlanks() {
+  const el = document.getElementById('cast-blanks');
+  if (!el) return;
+  castBlanks.forEach((item, i) => {
+    const div = document.createElement('div');
+    div.style.cssText = 'background:#f9fafb; border:1.5px solid #e5e7eb; border-radius:12px; padding:14px 16px;';
+    div.innerHTML = `
+      <div style="font-family:'Space Mono',monospace; font-size:.85rem; margin-bottom:10px; color:#1e1b4b">${item.q}</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+        <input id="cb${i}" style="border:1.5px solid #d1d5db; border-radius:8px; padding:7px 12px; font-family:'Space Mono',monospace; font-size:.82rem; flex:1; min-width:200px" placeholder="Type the missing part...">
+        <button onclick="checkBlank(${i},'${item.answer.replace(/'/g,"\\'")}','${item.hint.replace(/'/g,"\\'")}')" class="btn btn-p" style="padding:8px 16px; font-size:.8rem">Check</button>
+      </div>
+      <div id="cbfb${i}" style="margin-top:8px; font-size:.82rem; display:none; padding:8px 12px; border-radius:8px"></div>`;
+    el.appendChild(div);
+  });
+}
+function checkBlank(i, answer, hint) {
+  const val = document.getElementById('cb'+i).value.trim().replace(/\s+/g,'').toLowerCase();
+  const ans = answer.replace(/\s+/g,'').toLowerCase();
+  const fb = document.getElementById('cbfb'+i);
+  fb.style.display = 'block';
+  if (val === ans || val.includes(ans.replace(':=','').trim())) {
+    fb.style.background = '#f0fdf4'; fb.style.color = '#166534';
+    fb.innerHTML = `✅ Correct! <code style="font-family:'Space Mono',monospace">${answer}()</code> — ${hint}`;
+  } else {
+    fb.style.background = '#fef2f2'; fb.style.color = '#991b1b';
+    fb.innerHTML = `❌ Not quite. Answer: <code style="font-family:'Space Mono',monospace">${answer}()</code> — ${hint}`;
+  }
+}
+buildCastBlanks();
+
+// ── REPORT PLAYGROUND ──
+function runReport() {
+  const sName = document.getElementById('pg-name').value;
+  const sSubject = document.getElementById('pg-subject').value;
+  const m1raw = document.getElementById('pg-m1').value;
+  const m2raw = document.getElementById('pg-m2').value;
+  const out = document.getElementById('pg-output');
+  const code = document.getElementById('pg-code');
+
+  if (!sName || !sSubject || !m1raw || !m2raw) {
+    out.innerHTML = '<span style="color:red">⚠️ Please fill in all fields!</span>';
+    return;
+  }
+  const iMark1 = parseInt(m1raw);
+  const iMark2 = parseInt(m2raw);
+  if (isNaN(iMark1) || isNaN(iMark2)) {
+    out.innerHTML = '<span style="color:red">❌ Runtime Error: StrToInt failed — marks must be whole numbers!</span>';
+    return;
+  }
+  const rAverage = (iMark1 + iMark2) / 2;
+  const passed = rAverage >= 50;
+  out.innerHTML = `<strong>Name:</strong> ${sName}<br><strong>Subject:</strong> ${sSubject}<br><strong>Mark 1:</strong> ${iMark1}<br><strong>Mark 2:</strong> ${iMark2}<br><strong>Average:</strong> ${rAverage.toFixed(1)}%<br><strong>Result:</strong> <span style="color:${passed ? 'green':'red'}; font-weight:700">${passed ? '✅ PASSED' : '❌ FAILED'}</span>`;
+
+  code.innerHTML = `<span class="kw">procedure</span> TfrmReport.<span class="fn">btnGenerateClick</span>(Sender: TObject);\n<span class="kw">var</span>\n  sName, sSubject : <span class="ty">String</span>;\n  iMark1, iMark2 : <span class="ty">Integer</span>;\n  rAverage : <span class="ty">Real</span>;\n<span class="kw">begin</span>\n  sName <span class="op">:=</span> edtName.<span class="fn">Text</span>; <span class="cm">// = '${sName}'</span>\n  sSubject <span class="op">:=</span> edtSubject.<span class="fn">Text</span>; <span class="cm">// = '${sSubject}'</span>\n  iMark1 <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark1.<span class="fn">Text</span>); <span class="cm">// = ${iMark1}</span>\n  iMark2 <span class="op">:=</span> <span class="fn">StrToInt</span>(edtMark2.<span class="fn">Text</span>); <span class="cm">// = ${iMark2}</span>\n  rAverage <span class="op">:=</span> (iMark1 + iMark2) / <span class="nu">2</span>; <span class="cm">// = ${rAverage}</span>\n  lblOutput.<span class="fn">Caption</span> <span class="op">:=</span> sName + <span class="st">' – '</span> + sSubject;\n  lblAverage.<span class="fn">Caption</span> <span class="op">:=</span> <span class="st">'Average: '</span> + <span class="fn">FloatToStr</span>(rAverage);\n<span class="kw">end</span>;`;
+}
+function clearReport() {
+  ['pg-name','pg-subject','pg-m1','pg-m2'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('pg-output').innerHTML = '<span style="color:#aaa">lblOutput.Caption will appear here...</span>';
+  document.getElementById('pg-code').innerHTML = '<span class="cm">// Click "Generate Report" to see the code...</span>';
+}
+
+// ── QUIZ ──
+const questions = [
+  { q: 'What is a variable in programming?', opts: ['A type of component on a form', 'A memory location that can store one piece of data at a time', 'A programming error', 'A type of IDE'], correct: 1, exp: 'A variable is a named memory location that stores one item of data at any given time. The value can change but only one value is stored at a time.' },
+  { q: 'Which data type would you use to store the value 3.14159?', opts: ['Integer', 'Boolean', 'Real', 'Char'], correct: 2, exp: 'Real (or Float) is used for decimal numbers. Integer only stores whole numbers.' },
+  { q: 'What is the correct prefix convention for a String variable in Delphi?', opts: ['st', 'r', 's', 'b'], correct: 2, exp: 'The convention is a single lowercase letter: s for String, i for Integer, r for Real, b for Boolean, c for Char.' },
+  { q: 'Which of these is an INVALID variable name in Delphi?', opts: ['rAmountPaid', 'bIsValid', '2count', 'sName'], correct: 2, exp: '"2count" is invalid because variable names cannot START with a number. It can contain numbers but not as the first character.' },
+  { q: 'What is the assignment operator in Delphi/Pascal?', opts: ['=', '==', ':=', '<='], correct: 2, exp: 'In Pascal/Delphi, := (colon-equals) is the assignment operator. A single = is used for comparison only.' },
+  { q: 'When you read text from a TEdit component (edtName.Text), what data type is it?', opts: ['Integer', 'Real', 'Boolean', 'String'], correct: 3, exp: 'TEdit.Text always returns a String — even if the user types a number. You must cast it using StrToInt() or StrToFloat() if you need to calculate.' },
+  { q: 'Which function converts an Integer value to a String?', opts: ['StrToInt()', 'IntToStr()', 'StrToFloat()', 'FloatToStr()'], correct: 1, exp: 'IntToStr() converts an Integer to a String. This is needed when displaying a number in a TLabel.Caption or TMemo.' },
+  { q: 'A program compiles and runs, but displays the wrong answer. What type of error is this?', opts: ['Syntax error', 'Runtime error', 'Logic error', 'Compile error'], correct: 2, exp: 'A Logic Error means the program compiles and runs successfully, but produces incorrect results. The algorithm or calculation is wrong.' },
+  { q: 'Which of these variable declarations is CORRECT?', opts: ['var iAge = Integer;', 'var iAge : Integer;', 'iAge : Integer', 'Integer iAge;'], correct: 1, exp: 'Correct Delphi syntax: var keyword, then name colon type semicolon → var iAge : Integer;' },
+  { q: 'A phone number like 0821234567 should be stored as which data type?', opts: ['Integer', 'Real', 'String', 'Char'], correct: 2, exp: 'Phone numbers should be stored as String because: (1) the leading zero would be lost in Integer, (2) you never do arithmetic on phone numbers.' },
+  { q: 'What causes a Runtime Error?', opts: ['A misspelled variable name', 'The program doing something impossible while running', 'Wrong calculation giving wrong answer', 'Missing semicolon'], correct: 1, exp: 'Runtime errors occur when the program tries to do something impossible at runtime — like StrToInt("abc") or division by zero. The program crashes.' },
+  { q: 'What is the correct three-letter prefix for a TButton component?', opts: ['tbt', 'but', 'btn', 'btt'], correct: 2, exp: 'TButton uses the prefix "btn". So a button to calculate would be named btnCalculate, btnOK, etc.' },
+];
+
+let qScore = 0, qAnswered = 0;
+function buildQuiz() {
+  const wrap = document.getElementById('quiz-wrap');
+  wrap.innerHTML = '';
+  questions.forEach((q, i) => {
+    const div = document.createElement('div');
+    div.className = 'quiz-q';
+    div.innerHTML = `
+      <div class="qtext"><span style="color:var(--muted); font-size:.78rem">Question ${i+1} of ${questions.length}</span><br>${q.q}</div>
+      <div class="quiz-opts">
+        ${q.opts.map((o,j) => `<div class="qopt" id="qo${i}_${j}" onclick="answerQ(${i},${j})"><div class="qletter">${'ABCD'[j]}</div><span>${o}</span></div>`).join('')}
+      </div>
+      <div class="qfeedback" id="qfb${i}"></div>`;
+    wrap.appendChild(div);
+  });
+}
+function answerQ(qi, oi) {
+  const q = questions[qi];
+  for (let j = 0; j < 4; j++) {
+    const el = document.getElementById(`qo${qi}_${j}`);
+    if (el) el.classList.add('disabled');
+  }
+  const chosen = document.getElementById(`qo${qi}_${oi}`);
+  const correct = document.getElementById(`qo${qi}_${q.correct}`);
+  const fb = document.getElementById(`qfb${qi}`);
+  if (oi === q.correct) {
+    chosen.classList.add('correct');
+    fb.style.background = '#f0fdf4'; fb.style.color = '#166534';
+    fb.innerHTML = '✅ Correct! ' + q.exp;
+    qScore++;
+  } else {
+    chosen.classList.add('wrong');
+    correct.classList.add('correct');
+    fb.style.background = '#fef2f2'; fb.style.color = '#991b1b';
+    fb.innerHTML = '❌ Incorrect. Correct: <strong>' + q.opts[q.correct] + '</strong>. ' + q.exp;
+  }
+  fb.style.display = 'block';
+  qAnswered++;
+  document.getElementById('qScore').textContent = qScore;
+  document.getElementById('qBar').style.width = Math.round(qScore / questions.length * 100) + '%';
+  document.getElementById('qLabel').textContent = `${qScore} / ${questions.length} correct (${qAnswered} answered)`;
+}
+function resetQuiz() {
+  qScore = 0; qAnswered = 0;
+  document.getElementById('qScore').textContent = '0';
+  document.getElementById('qBar').style.width = '0%';
+  document.getElementById('qLabel').textContent = 'Answer questions to earn points!';
+  buildQuiz();
+}
+buildQuiz();
+</script>
+</body>
+</html>
